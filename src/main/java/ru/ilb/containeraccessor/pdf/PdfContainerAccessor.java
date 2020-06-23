@@ -85,7 +85,7 @@ public class PdfContainerAccessor implements ContainerAccessor {
      */
     private static void delete(Path path) throws IOException {
         Files.walk(path).sorted(Comparator.reverseOrder())
-                .peek(System.out::println)
+//                .peek(System.out::println)
                 .map(Path::toFile)
                 .forEach(File::delete);
     }
