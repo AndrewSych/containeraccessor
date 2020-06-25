@@ -5,8 +5,8 @@
  */
 package ru.ilb.containeraccessor;
 
-import ru.ilb.containeraccessor.pdf.PdfContainerAccessor;
 import java.net.URI;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -16,10 +16,17 @@ import javax.inject.Named;
 @Named
 public class ContainerAccessorFactory {
 
+    private final ContainerExtractorFactory containerExtractorFactory;
+
+    @Inject
+    public ContainerAccessorFactory(ContainerExtractorFactory containerExtractorFactory) {
+        this.containerExtractorFactory = containerExtractorFactory;
+    }
+
     public ContainerAccessor getContainerAccessor(URI uri, String mediaType) {
          switch (mediaType) {
             case "application/pdf":
-                return new PdfContainerAccessor(uri);
+                return new ContainerAccessorImpl(uri, containerExtractorFactory.getContainerExtractor(mediaType));
             default:
                 throw new IllegalArgumentException("unsupported mediatype " + mediaType);
          }

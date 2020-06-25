@@ -5,8 +5,6 @@
  */
 package ru.ilb.containeraccessor;
 
-import ru.ilb.containeraccessor.pdf.PdfContainerExtractor;
-import java.net.URI;
 import javax.inject.Named;
 
 /**

@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.ilb.containeraccessor.pdf;
+package ru.ilb.containeraccessor;
 
 import java.io.File;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import ru.ilb.containeraccessor.ContainerExtractor;
 import ru.ilb.jfunction.runtime.RuntimeFunction;
 
 public class PdfContainerExtractor implements ContainerExtractor {

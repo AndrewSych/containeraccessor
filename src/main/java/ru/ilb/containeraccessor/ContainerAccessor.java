@@ -13,20 +13,7 @@ import java.util.List;
  *
  * @author slavb
  */
-public interface ContainerAccessor extends Closeable{
-
-    /**
-     * List items in container
-     * @return
-     */
-    List<ContainerItem> getItems();
-
-    /**
-     * get item contents
-     * @param name
-     * @return
-     */
-    byte[] getItemContents(String name);
+public interface ContainerAccessor extends Closeable {
 
     /**
      * get path to extracted contents
