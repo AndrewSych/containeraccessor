@@ -18,10 +18,10 @@ import org.junit.jupiter.api.Test;
  *
  * @author slavb
  */
-public class PdfContainerExtractorTest {
+public class ContainerExtractorPdfTest {
 
     /**
-     * Test of extract method, of class PdfContainerExtractor.
+     * Test of extract method, of class ContainerExtractorPdf.
      *
      * @throws java.io.IOException
      * @throws java.net.URISyntaxException
@@ -33,12 +33,11 @@ public class PdfContainerExtractorTest {
 
         Path folder = Files.createTempDirectory("PdfToJpegFilesImplTest");
         folder.toFile().deleteOnExit();
-        PdfContainerExtractor instance = new PdfContainerExtractor();
-        instance.extract(pdfUri, folder, "page");
+        ContainerExtractorPdf instance = new ContainerExtractorPdf();
+        instance.extract(pdfUri, folder);
         String pageFileName = "page-000.jpg";
         Path pagePath = folder.resolve(pageFileName);
-        File pageFile = pagePath.toFile();
-        assertTrue(pageFile.exists(), pageFileName + " not exists");
+        assertTrue(Files.exists(pagePath), pageFileName + " not exists");
 //        URI expectedPageUri = this.getClass().getResource("page-000.jpg").toURI();
 //        File expectedPageFile = Paths.get(expectedPageUri).toFile();
 //

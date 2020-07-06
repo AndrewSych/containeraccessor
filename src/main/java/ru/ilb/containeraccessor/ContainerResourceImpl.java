@@ -15,22 +15,24 @@
  */
 package ru.ilb.containeraccessor;
 
-import java.io.File;
 import java.net.URI;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import ru.ilb.jfunction.runtime.RuntimeFunction;
+import javax.ws.rs.core.Response;
 
-public class PdfContainerExtractor implements ContainerExtractor {
+
+public class ContainerResourceImpl implements ContainerResource {
+
+
+    private final Path path;
+
+    public ContainerResourceImpl(Path path) {
+        this.path = path;
+    }
+
 
     @Override
-    public void extract(URI uri, Path folder, String prefix) {
-        File pdfFile = Paths.get(uri.getPath()).toFile();
-        if (!pdfFile.exists()) {
-            throw new IllegalArgumentException(pdfFile.toString() + " does not exists");
-        }
-        String[] command = new String[]{"pdfimages", "-j", pdfFile.toString(), folder.resolve(prefix).toString()};
-        RuntimeFunction instance = new RuntimeFunction(command);
-        instance.apply(new byte[]{});
+    public Response containerDownload(String name, String accept) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
 }

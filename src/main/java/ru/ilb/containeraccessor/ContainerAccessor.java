@@ -6,8 +6,8 @@
 package ru.ilb.containeraccessor;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 
 /**
  *
@@ -16,8 +16,9 @@ import java.util.List;
 public interface ContainerAccessor extends Closeable {
 
     /**
-     * get path to extracted contents
+     * get path to file contents
      * @return
+     * @throws java.io.IOException
      */
-    public Path getContentsPath();
+    public Path getContentsPath() throws IOException;
 }

@@ -7,7 +7,7 @@
     <packaging>jar</packaging>
     <name>containeraccessor</name>
     <description>containeraccessor library</description>
-    <url>https://git.ilb.ru/ilb.ru/jfunction</url>
+    <url>https://git.ilb.ru/ilb.ru/containeraccessor</url>
     <licenses>
         <license>
             <name>Apache 2.0</name>
@@ -88,6 +88,17 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <version>5.6.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ru.ilb.jfunction</groupId>
+            <artifactId>jfunction-resources</artifactId>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>8.0</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

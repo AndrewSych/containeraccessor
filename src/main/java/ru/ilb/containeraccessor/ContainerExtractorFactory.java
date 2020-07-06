@@ -17,7 +17,7 @@ public class ContainerExtractorFactory {
     public ContainerExtractor getContainerExtractor(String mediaType) {
          switch (mediaType) {
             case "application/pdf":
-                return new PdfContainerExtractor();
+                return new ContainerExtractorPdf();
             default:
                 throw new IllegalArgumentException("unsupported mediatype " + mediaType);
          }

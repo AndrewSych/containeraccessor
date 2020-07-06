@@ -10,14 +10,20 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileTime;
 import java.util.Comparator;
-import ru.ilb.containeraccessor.ContainerAccessor;
-import ru.ilb.containeraccessor.ContainerExtractor;
+import ru.ilb.jfunction.resources.URIToTempPathFunction;
+import ru.ilb.jfunction.resources.URIToLocalURIFunction;
 
 public class ContainerAccessorImpl implements ContainerAccessor {
 
+    private final URIToTempPathFunction uriToTempPathFunction = URIToTempPathFunction.INSTANCE;
+    private final URIToLocalURIFunction uriToLocalUriFunction = URIToLocalURIFunction.INSTANCE;
+
     private final URI uri;
 
+    private URI localUri;
     private Path contentsPath;
 
     private final ContainerExtractor containerExtractor;
@@ -28,17 +34,29 @@ public class ContainerAccessorImpl implements ContainerAccessor {
     }
 
     @Override
-    public Path getContentsPath() {
+    public Path getContentsPath() throws IOException {
         if (this.contentsPath == null) {
-            try {
-                this.contentsPath = Files.createTempDirectory("containerextractor");
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
+            // localize uri
+            this.localUri = uriToLocalUriFunction.apply(uri);
+            this.contentsPath = uriToTempPathFunction.apply(uri);
+            boolean contentsExists = Files.exists(contentsPath);
+            if (contentsExists) {
+                FileTime contentsLastMod = Files.getLastModifiedTime(contentsPath);
+                FileTime fileLastMod = Files.getLastModifiedTime(Paths.get(localUri));
+                // unpaked contents older than file, cleanup
+                if (contentsLastMod.compareTo(fileLastMod) < 0) {
+                    delete(contentsPath);
+                    contentsExists = false;
+                }
             }
-            containerExtractor.extract(uri, contentsPath, "page");
+            if (!contentsExists) {
+                Files.createDirectories(contentsPath);
+                containerExtractor.extract(localUri, contentsPath);
+            }
         }
         return contentsPath;
     }
+
     /**
      * cleanup
      *
@@ -59,7 +77,7 @@ public class ContainerAccessorImpl implements ContainerAccessor {
      */
     private static void delete(Path path) throws IOException {
         Files.walk(path).sorted(Comparator.reverseOrder())
-//                .peek(System.out::println)
+                //                .peek(System.out::println)
                 .map(Path::toFile)
                 .forEach(File::delete);
     }

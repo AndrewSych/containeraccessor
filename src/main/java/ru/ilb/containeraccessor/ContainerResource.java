@@ -15,22 +15,30 @@
  */
 package ru.ilb.containeraccessor;
 
-import java.io.IOException;
-import java.net.URI;
-import java.nio.file.Path;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
+
 
 /**
  *
  * @author slavb
  */
-public interface ContainerExtractor {
+public interface ContainerResource {
 
     /**
-     * Extracts container contents to specified folder
-     * @param uri
-     * @param folder
-     * @throws java.io.IOException
+     * get container contents
+     * @param name file name
+     * @param accept
+     * @return
      */
-    public void extract(URI uri, Path folder) throws IOException;
+    @GET
+    @Produces("*/*")
+    @Path("/{name:.*}")
+    Response containerDownload(@PathParam("name") String name, @HeaderParam("accept") String accept);
 
 }
