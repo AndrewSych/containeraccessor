@@ -15,23 +15,40 @@
  */
 package ru.ilb.containeraccessor;
 
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.ws.rs.core.Response;
 
-
 public class ContainerResourceImpl implements ContainerResource {
 
+    private final URI uri;
 
-    private final Path path;
+    private final ContainerAccessorFactory caf = new ContainerAccessorFactory();
 
-    public ContainerResourceImpl(Path path) {
-        this.path = path;
+    private ContainerAccessor containerAccessor;
+
+    public ContainerResourceImpl(URI uri) {
+        this.uri = uri;
     }
 
+    @Override
+    public Response get(String accept) {
+        //FIXME hardcode mimeType
+//        containerAccessor = caf.getContainerAccessor(uri, "application/pdf");
+//        try {
+//            Path path = containerAccessor.getContentsPath().resolve(name);
+//            byte[] contents = Files.readAllBytes(path);
+//            return Response.ok(contents).header("Co", uri).build();
+//        } catch (IOException ex) {
+//            throw new RuntimeException(ex);
+//        }
+        return null;
+    }
 
     @Override
-    public Response containerDownload(String name, String accept) {
+    public ContainerResource subResource() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

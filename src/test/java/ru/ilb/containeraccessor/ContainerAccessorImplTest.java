@@ -32,7 +32,7 @@ public class ContainerAccessorImplTest {
     public void testGetContentsPath() throws URISyntaxException, IOException {
         System.out.println("getContentsPath");
         URI pdfUri = this.getClass().getResource("test.pdf").toURI();
-        ContainerAccessorImpl instance = new ContainerAccessorImpl(pdfUri, new ContainerExtractorPdf());
+        ContainerAccessorImpl instance = new ContainerAccessorImpl(pdfUri);
 
         Path folder = instance.getContentsPath();
         String pageFileName = "page-000.jpg";

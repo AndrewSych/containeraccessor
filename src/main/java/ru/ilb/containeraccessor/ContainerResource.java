@@ -32,13 +32,13 @@ public interface ContainerResource {
 
     /**
      * get container contents
-     * @param name file name
      * @param accept
      * @return
      */
     @GET
     @Produces("*/*")
-    @Path("/{name:.*}")
-    Response containerDownload(@PathParam("name") String name, @HeaderParam("accept") String accept);
+    Response get(@HeaderParam("accept") String accept);
 
+    @Path("{name}")
+    ContainerResource subResource();
 }

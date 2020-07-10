@@ -13,32 +13,34 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import java.util.Comparator;
-import ru.ilb.jfunction.resources.URIToTempPathFunction;
-import ru.ilb.jfunction.resources.URIToLocalURIFunction;
+import ru.ilb.uriaccessor.URIAccessor;
+import ru.ilb.uriaccessor.URIAccessorFactory;
 
 public class ContainerAccessorImpl implements ContainerAccessor {
 
-    private final URIToTempPathFunction uriToTempPathFunction = URIToTempPathFunction.INSTANCE;
-    private final URIToLocalURIFunction uriToLocalUriFunction = URIToLocalURIFunction.INSTANCE;
+    URIAccessorFactory uriAccessorFactory = new URIAccessorFactory();
+    ContainerExtractorFactory containerExtractorFactory = new ContainerExtractorFactory();
 
     private final URI uri;
+    private final URIAccessor uriAccessor;
 
     private URI localUri;
     private Path contentsPath;
 
-    private final ContainerExtractor containerExtractor;
+    private ContainerExtractor containerExtractor;
 
-    public ContainerAccessorImpl(URI uri, ContainerExtractor containerExtractor) {
+    public ContainerAccessorImpl(URI uri) {
         this.uri = uri;
-        this.containerExtractor = containerExtractor;
+        this.uriAccessor = uriAccessorFactory.getURIAccessor(uri);
     }
 
     @Override
     public Path getContentsPath() throws IOException {
         if (this.contentsPath == null) {
             // localize uri
-            this.localUri = uriToLocalUriFunction.apply(uri);
-            this.contentsPath = uriToTempPathFunction.apply(uri);
+            this.localUri = uriAccessor.getLocalUri();
+            this.contentsPath = uriAccessor.getStorage().resolve("contents");
+            this.containerExtractor = containerExtractorFactory.getContainerExtractor(uriAccessor.getContentType());
             boolean contentsExists = Files.exists(contentsPath);
             if (contentsExists) {
                 FileTime contentsLastMod = Files.getLastModifiedTime(contentsPath);

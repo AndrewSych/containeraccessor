@@ -22,7 +22,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import ru.ilb.jfunction.runtime.RuntimeFunction;
-import ru.ilb.jfunction.resources.URIToLocalURIFunction;
 
 public class ContainerExtractorPdf implements ContainerExtractor {
 

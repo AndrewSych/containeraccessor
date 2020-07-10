@@ -16,19 +16,7 @@ import javax.inject.Named;
 @Named
 public class ContainerAccessorFactory {
 
-    private final ContainerExtractorFactory containerExtractorFactory;
-
-    @Inject
-    public ContainerAccessorFactory(ContainerExtractorFactory containerExtractorFactory) {
-        this.containerExtractorFactory = containerExtractorFactory;
-    }
-
     public ContainerAccessor getContainerAccessor(URI uri, String mediaType) {
-         switch (mediaType) {
-            case "application/pdf":
-                return new ContainerAccessorImpl(uri, containerExtractorFactory.getContainerExtractor(mediaType));
-            default:
-                throw new IllegalArgumentException("unsupported mediatype " + mediaType);
-         }
+        return new ContainerAccessorImpl(uri);
     }
 }
