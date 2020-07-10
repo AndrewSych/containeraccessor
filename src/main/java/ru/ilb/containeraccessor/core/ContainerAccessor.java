@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ru.ilb.containeraccessor;
+package ru.ilb.containeraccessor.core;
 
 import java.io.Closeable;
 import java.io.IOException;

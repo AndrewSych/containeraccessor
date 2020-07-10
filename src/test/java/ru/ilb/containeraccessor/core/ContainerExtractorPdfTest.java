@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ru.ilb.containeraccessor;
+package ru.ilb.containeraccessor.core;
 
+import ru.ilb.containeraccessor.core.ContainerExtractorPdf;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;

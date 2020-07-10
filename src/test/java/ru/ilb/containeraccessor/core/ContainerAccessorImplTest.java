@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ru.ilb.containeraccessor;
+package ru.ilb.containeraccessor.core;
 
+import ru.ilb.containeraccessor.core.ContainerAccessorImpl;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;

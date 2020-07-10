@@ -13,32 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.ilb.containeraccessor;
+package ru.ilb.containeraccessor.core;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Response;
-
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Path;
 
 /**
  *
  * @author slavb
  */
-public interface ContainerResource {
+public interface ContainerExtractor {
 
     /**
-     * get container contents
-     * @param accept
-     * @return
+     * Extracts container contents to specified folder
+     * @param uri
+     * @param folder
+     * @throws java.io.IOException
      */
-    @GET
-    @Produces("*/*")
-    Response get(@HeaderParam("accept") String accept);
+    public void extract(URI uri, Path folder) throws IOException;
 
-    @Path("{name}")
-    ContainerResource subResource();
 }
