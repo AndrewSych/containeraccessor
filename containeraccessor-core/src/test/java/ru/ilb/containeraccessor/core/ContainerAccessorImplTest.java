@@ -5,7 +5,6 @@
  */
 package ru.ilb.containeraccessor.core;
 
-import ru.ilb.containeraccessor.core.ContainerAccessorImpl;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
