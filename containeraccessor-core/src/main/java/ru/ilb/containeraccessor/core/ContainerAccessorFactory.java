@@ -6,8 +6,8 @@
 package ru.ilb.containeraccessor.core;
 
 import java.net.URI;
-import javax.inject.Inject;
 import javax.inject.Named;
+import ru.ilb.uriaccessor.URIAccessor;
 
 /**
  *
@@ -16,7 +16,11 @@ import javax.inject.Named;
 @Named
 public class ContainerAccessorFactory {
 
-    public ContainerAccessor getContainerAccessor(URI uri, String mediaType) {
+    public ContainerAccessor getContainerAccessor(URI uri) {
         return new ContainerAccessorImpl(uri);
+    }
+
+     public ContainerAccessor getContainerAccessor(URIAccessor uriAccessor) {
+        return new ContainerAccessorImpl(uriAccessor);
     }
 }

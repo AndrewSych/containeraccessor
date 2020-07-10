@@ -21,7 +21,6 @@ public class ContainerAccessorImpl implements ContainerAccessor {
     URIAccessorFactory uriAccessorFactory = new URIAccessorFactory();
     ContainerExtractorFactory containerExtractorFactory = new ContainerExtractorFactory();
 
-    private final URI uri;
     private final URIAccessor uriAccessor;
 
     private URI localUri;
@@ -29,9 +28,12 @@ public class ContainerAccessorImpl implements ContainerAccessor {
 
     private ContainerExtractor containerExtractor;
 
+
     public ContainerAccessorImpl(URI uri) {
-        this.uri = uri;
         this.uriAccessor = uriAccessorFactory.getURIAccessor(uri);
+    }
+    public ContainerAccessorImpl(URIAccessor uriAccessor) {
+        this.uriAccessor = uriAccessor;
     }
 
     @Override
