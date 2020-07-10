@@ -17,13 +17,25 @@ package ru.ilb.containeraccessor.components;
 
 import java.net.URI;
 import javax.inject.Named;
+import javax.ws.rs.core.Response;
+import ru.ilb.uriaccessor.URIStorage;
+import ru.ilb.uriaccessor.URIStorageFactory;
 
 @Named
 public class ContainersResourceImpl implements ContainersResource {
 
+    URIStorageFactory uriStorageFactory = new URIStorageFactory();
+    private final URIStorage uriStorage = uriStorageFactory.getURIStorage();
+
     @Override
-    public ContainerResource subResource(String name) {
-        return new ContainerResourceImpl(URI.create(name));
+    public ContainerResource subResource(String uriCode) {
+        return new ContainerResourceImpl(uriStorage.getUri(uriCode));
+    }
+
+    @Override
+    public Response getUri(String uri) {
+        //redirec to subresource based on uriCode
+        return Response.seeOther(URI.create("containers/" + uriStorage.registerUri(URI.create(uri)))).build();
     }
 
 }

@@ -19,26 +19,39 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import ru.ilb.containeraccessor.core.ContainerAccessor;
 import ru.ilb.containeraccessor.core.ContainerAccessorFactory;
+import ru.ilb.uriaccessor.URIAccessor;
+import ru.ilb.uriaccessor.URIAccessorFactory;
 
 public class ContainerResourceImpl implements ContainerResource {
 
     private final URI uri;
 
+    private final URIAccessor uriAccessor;
+
+    URIAccessorFactory uriAccessorFactory = new URIAccessorFactory();
+
     private final ContainerAccessorFactory caf = new ContainerAccessorFactory();
 
-    private ContainerAccessor containerAccessor;
+    private final ContainerAccessor containerAccessor;
 
     public ContainerResourceImpl(URI uri) {
         this.uri = uri;
+        this.uriAccessor = uriAccessorFactory.getURIAccessor(uri);
+        this.containerAccessor = caf.getContainerAccessor(this.uriAccessor);
     }
 
     @Override
     public Response get(String accept) {
-        //FIXME hardcode mimeType
+        try {
+            //FIXME hardcode mimeType
 //        containerAccessor = caf.getContainerAccessor(uri, "application/pdf");
 //        try {
 //            Path path = containerAccessor.getContentsPath().resolve(name);
@@ -47,7 +60,10 @@ public class ContainerResourceImpl implements ContainerResource {
 //        } catch (IOException ex) {
 //            throw new RuntimeException(ex);
 //        }
-        return Response.ok("test").build();
+            return Response.ok(uriAccessor.getContent()).header(HttpHeaders.CONTENT_TYPE, uriAccessor.getContentType()).build();
+        } catch (IOException ex) {
+            throw new WebApplicationException(ex);
+        }
     }
 
     @Override

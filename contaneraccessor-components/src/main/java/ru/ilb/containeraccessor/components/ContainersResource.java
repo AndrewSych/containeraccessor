@@ -15,8 +15,11 @@
  */
 package ru.ilb.containeraccessor.components;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 
 
 /**
@@ -26,6 +29,10 @@ import javax.ws.rs.PathParam;
 @Path("containers")
 public interface ContainersResource {
 
-    @Path("{name}")
-    ContainerResource subResource(@PathParam("name") String name);
+    @GET
+    Response getUri(@QueryParam("uri") String uri);
+
+
+    @Path("{uriCode}")
+    ContainerResource subResource(@PathParam("uriCode") String uriCode);
 }

@@ -15,12 +15,21 @@
  */
 package ru.ilb.containeraccessor.components;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import javax.ws.rs.core.Response;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import ru.ilb.jfunction.resources.URLToBytesFunction;
 
 /**
  *
@@ -37,10 +46,13 @@ public class ContainerResourceImplTest {
     public ContainerResourceImplTest() {
     }
 
+    private String getServiceBaseUri() {
+        return "http://localhost:" + randomPort.toString() + "/web";
+    }
+
     private ContainersResource getContainersResource() {
         if (resource == null) {
-            String port = randomPort.toString();
-            String resourceUri = "http://localhost:" + port + "/web";
+            String resourceUri = getServiceBaseUri();
             System.out.println("resourceUri=" + resourceUri);
             resource = JAXRSClientFactory.create(resourceUri, ContainersResource.class);
         }
@@ -50,11 +62,21 @@ public class ContainerResourceImplTest {
 
     /**
      * Test of get method, of class ContainerResourceImpl.
+     *
+     * @throws java.net.URISyntaxException
+     * @throws java.net.MalformedURLException
      */
     @Test
-    public void testGet() {
-        ContainerResource res = getContainersResource().subResource("test");
-        assertEquals("test", res.get("text/xml").readEntity(String.class));
+    public void testGet() throws URISyntaxException, MalformedURLException, IOException {
+        URI pdfUri = this.getClass().getResource("test.pdf").toURI();
+        URL input = new URL(getServiceBaseUri() + "/containers?uri=" + pdfUri.toString());
+        byte[] apply = URLToBytesFunction.INSTANCE.apply(input);
+        assertArrayEquals(Files.readAllBytes(Paths.get(pdfUri)), apply);
+
+//        Response uriResource = getContainersResource().getUri(pdfUri.toString());
+//        ContainerResource res = uriResource.readEntity(type);
+//        assertEquals("test", res.get("text/xml").readEntity(String.class));
+
     }
 
     /**
