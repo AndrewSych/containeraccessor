@@ -15,15 +15,7 @@
  */
 package ru.ilb.containeraccessor.components;
 
-import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import ru.ilb.containeraccessor.core.ContainerAccessor;
@@ -32,9 +24,8 @@ import ru.ilb.uriaccessor.URIAccessor;
 import ru.ilb.uriaccessor.URIAccessorFactory;
 import ru.ilb.uriaccessor.URIStorage;
 
-public class ContainerResourceImpl implements ContainerResource {
-
-    private final URI uri;
+public class ContainerResourceIndexJson implements ContainerResource {
+private final URI uri;
 
     private final URIAccessor uriAccessor;
 
@@ -46,35 +37,23 @@ public class ContainerResourceImpl implements ContainerResource {
 
     private final ContainerAccessor containerAccessor;
 
-    public ContainerResourceImpl(URI uri, URIStorage uriStorage) {
+    public ContainerResourceIndexJson(URI uri, URIStorage uriStorage) {
         this.uri = uri;
         this.uriAccessor = uriAccessorFactory.getURIAccessor(uri);
         this.uriStorage = uriStorage;
         this.containerAccessor = caf.getContainerAccessor(this.uriAccessor);
     }
-
     @Override
     public Response get(String accept) {
-        try {
-            return Response.ok(uriAccessor.getContent()).header(HttpHeaders.CONTENT_TYPE, uriAccessor.getContentType()).build();
-        } catch (IOException ex) {
-            throw new WebApplicationException(ex);
-        }
+        //containerAccessor.getContentsPath();
+        String json = "{}";
+        return Response.ok(json).header(HttpHeaders.CONTENT_TYPE, "application/json").build();
     }
+
 
     @Override
     public ContainerResource subResource(String name) {
-        try {
-            Path path = containerAccessor.getContentsPath().resolve(name);
-            if (Files.exists(path)) {
-                return new ContainerResourceImpl(path.toUri(), uriStorage);
-            } else if ("index".equals(name)) {
-                return new ContainerResourceIndexJson(uri, uriStorage);
-            } else {
-                throw new NotFoundException(name + " not found");
-            }
-        } catch (IOException ex) {
-            throw new WebApplicationException(ex);
-        }
+        throw new UnsupportedOperationException("Not supported yet.");
     }
+
 }

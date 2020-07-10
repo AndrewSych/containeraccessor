@@ -20,30 +20,25 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import javax.ws.rs.core.Response;
-import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import ru.ilb.jfunction.resources.URLToBytesFunction;
+import ru.ilb.jfunction.resources.URLToStringFunction;
 
 /**
  *
  * @author slavb
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ContainerResourceImplTest {
+public class ContainerResourceIndexJsonTest {
 
     private ContainersResource resource;
 
     @LocalServerPort
     private Integer randomPort;
 
-    public ContainerResourceImplTest() {
+    public ContainerResourceIndexJsonTest() {
     }
 
     private String getServiceBaseUri() {
@@ -59,9 +54,9 @@ public class ContainerResourceImplTest {
     @Test
     public void testGet() throws URISyntaxException, MalformedURLException, IOException {
         URI pdfUri = this.getClass().getResource("test.pdf").toURI();
-        URL input = new URL(getServiceBaseUri() + "/containers?uri=" + pdfUri.toString());
-        byte[] apply = URLToBytesFunction.INSTANCE.apply(input);
-        assertArrayEquals(Files.readAllBytes(Paths.get(pdfUri)), apply);
+        URL input = new URL(getServiceBaseUri() + "/containers?uri=" + pdfUri.toString() + "&path=index.json");
+        String apply = URLToStringFunction.INSTANCE.apply(input);
+        assertEquals("{}", apply);
     }
 
 }

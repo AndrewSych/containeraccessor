@@ -16,6 +16,8 @@
 package ru.ilb.containeraccessor.components;
 
 import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.inject.Named;
 import javax.ws.rs.core.Response;
 import ru.ilb.uriaccessor.URIStorage;
@@ -29,13 +31,24 @@ public class ContainersResourceImpl implements ContainersResource {
 
     @Override
     public ContainerResource subResource(String uriCode) {
-        return new ContainerResourceImpl(uriStorage.getUri(uriCode));
+        return new ContainerResourceImpl(uriStorage.getUri(uriCode), uriStorage);
     }
 
     @Override
-    public Response getUri(String uri) {
-        //redirec to subresource based on uriCode
-        return Response.seeOther(URI.create("containers/" + uriStorage.registerUri(URI.create(uri)))).build();
+    public Response getUri(String uri, String path) {
+        //redirect to subresource based on uriCode and optional path
+        StringBuilder redirect = new StringBuilder(100);
+        redirect.append("containers/");
+        redirect.append(uriStorage.registerUri(URI.create(uri)));
+
+//Paths.get("containers", uriStorage.registerUri(URI.create(uri)));
+        if (path != null && !path.isEmpty()) {
+            if (!path.startsWith("/")) {
+                redirect.append("/");
+            }
+            redirect.append(path);
+        }
+        return Response.seeOther(URI.create(redirect.toString())).build();
     }
 
 }

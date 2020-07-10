@@ -30,7 +30,7 @@ import javax.ws.rs.core.Response;
 public interface ContainersResource {
 
     @GET
-    Response getUri(@QueryParam("uri") String uri);
+    Response getUri(@QueryParam("uri") String uri, @QueryParam("path") String path);
 
 
     @Path("{uriCode}")
