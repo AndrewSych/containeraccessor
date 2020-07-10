@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 slavb.
+ * Copyright 2019 slavb.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,32 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.ilb.containeraccessor.components;
+package ru.ilb.containeraccessor;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Response;
-
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 /**
  *
  * @author slavb
  */
-public interface ContainerResource {
+@SpringBootApplication
+@ComponentScan
+@Configuration
+public class Application {
+    
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 
-    /**
-     * get container contents
-     * @param accept
-     * @return
-     */
-    @GET
-    @Produces("*/*")
-    Response get(@HeaderParam("accept") String accept);
 
-    @Path("{name}")
-    ContainerResource subResource(@PathParam("name") String name);
 }

@@ -15,30 +15,15 @@
  */
 package ru.ilb.containeraccessor.components;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Response;
+import java.net.URI;
+import javax.inject.Named;
 
+@Named
+public class ContainersResourceImpl implements ContainersResource {
 
-/**
- *
- * @author slavb
- */
-public interface ContainerResource {
+    @Override
+    public ContainerResource subResource(String name) {
+        return new ContainerResourceImpl(URI.create(name));
+    }
 
-    /**
-     * get container contents
-     * @param accept
-     * @return
-     */
-    @GET
-    @Produces("*/*")
-    Response get(@HeaderParam("accept") String accept);
-
-    @Path("{name}")
-    ContainerResource subResource(@PathParam("name") String name);
 }

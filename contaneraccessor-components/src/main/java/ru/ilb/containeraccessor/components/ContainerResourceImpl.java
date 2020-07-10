@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import ru.ilb.containeraccessor.core.ContainerAccessor;
 import ru.ilb.containeraccessor.core.ContainerAccessorFactory;
@@ -46,11 +47,11 @@ public class ContainerResourceImpl implements ContainerResource {
 //        } catch (IOException ex) {
 //            throw new RuntimeException(ex);
 //        }
-        return null;
+        return Response.ok("test").build();
     }
 
     @Override
-    public ContainerResource subResource() {
+    public ContainerResource subResource(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
