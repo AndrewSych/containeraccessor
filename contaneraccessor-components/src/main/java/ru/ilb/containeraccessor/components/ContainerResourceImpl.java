@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.ilb.containeraccessor.core;
+package ru.ilb.containeraccessor.components;
 
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.ws.rs.core.Response;
+import ru.ilb.containeraccessor.core.ContainerAccessor;
+import ru.ilb.containeraccessor.core.ContainerAccessorFactory;
 
 public class ContainerResourceImpl implements ContainerResource {
 
