@@ -33,7 +33,7 @@ public class ContainerAccessorImplTest {
         System.out.println("getContentsPath");
         URI pdfUri = this.getClass().getResource("test.pdf").toURI();
         ContainerAccessorImpl instance = new ContainerAccessorImpl(pdfUri);
-
+        
         Path folder = instance.getContentsPath();
         String pageFileName = "page-000.jpg";
         Path pagePath = folder.resolve(pageFileName);
