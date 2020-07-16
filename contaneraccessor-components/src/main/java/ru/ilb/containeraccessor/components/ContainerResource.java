@@ -15,6 +15,7 @@
  */
 package ru.ilb.containeraccessor.components;
 
+import java.io.IOException;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
@@ -37,7 +38,7 @@ public interface ContainerResource {
      */
     @GET
     @Produces("*/*")
-    Response get(@HeaderParam("accept") String accept);
+    Response get(@HeaderParam("accept") String accept) throws IOException;
 
     @Path("{name}")
     ContainerResource subResource(@PathParam("name") String name);
