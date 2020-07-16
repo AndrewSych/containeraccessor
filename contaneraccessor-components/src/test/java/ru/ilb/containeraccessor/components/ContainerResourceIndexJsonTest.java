@@ -56,7 +56,7 @@ public class ContainerResourceIndexJsonTest {
         URI pdfUri = this.getClass().getResource("test.pdf").toURI();
         URL input = new URL(getServiceBaseUri() + "/containers?uri=" + pdfUri.toString() + "&path=index.json");
         String apply = URLToStringFunction.INSTANCE.apply(input);
-        assertEquals("{}", apply);
+        assertEquals("{\"filesDTO\":[{\"filename\":\"page-000.jpg\",\"size\":55505,\"lastModified\":\"16-07-2020\"}]}", apply);
     }
 
 }

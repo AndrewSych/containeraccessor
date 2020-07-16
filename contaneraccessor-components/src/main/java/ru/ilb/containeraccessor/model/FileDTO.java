@@ -16,17 +16,28 @@
 package ru.ilb.containeraccessor.model;
 
 import java.io.Serializable;
-import java.nio.file.attribute.FileTime;
 import java.time.LocalDate;
+import javax.persistence.Basic;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author andrewsych
  */
-public class FileDTO implements Serializable{
+@XmlRootElement(name = "file")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class FileDTO implements Serializable {
+
+    @Basic
     private String filename;
+    
+    @Basic
     private long size;
-    private long lastModifiedDate;
+    
+    @Basic
+    private String lastModified;
 
     /**
      * @return the filename
@@ -57,17 +68,19 @@ public class FileDTO implements Serializable{
     }
 
     /**
-     * @param lastModifiedDate the lastModifiedDate to set
+     * @return the lastModified
      */
-    public void setLastModifiedDate(long lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
+    public String getLastModified() {
+        return lastModified;
     }
 
     /**
-     * @return the lastModifiedDate
+     * @param lastModified the lastModified to set
      */
-    public long getLastModifiedDate() {
-        return lastModifiedDate;
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
     }
+
+
 
 }
