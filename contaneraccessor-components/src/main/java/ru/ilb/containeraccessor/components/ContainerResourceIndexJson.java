@@ -15,17 +15,31 @@
  */
 package ru.ilb.containeraccessor.components;
 
+import java.io.IOException;
 import java.net.URI;
-import javax.ws.rs.core.HttpHeaders;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ContextResolver;
+import javax.xml.bind.JAXBContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.ilb.containeraccessor.core.ContainerAccessor;
 import ru.ilb.containeraccessor.core.ContainerAccessorFactory;
 import ru.ilb.uriaccessor.URIAccessor;
 import ru.ilb.uriaccessor.URIAccessorFactory;
 import ru.ilb.uriaccessor.URIStorage;
+import ru.ilb.common.jaxb.util.JaxbUtil;
+import ru.ilb.containeraccessor.model.FileDTO;
 
 public class ContainerResourceIndexJson implements ContainerResource {
-private final URI uri;
+
+    @Autowired
+    private ContextResolver<JAXBContext> jaxbContextResolver;
+
+    private final URI uri;
 
     private final URIAccessor uriAccessor;
 
@@ -43,17 +57,47 @@ private final URI uri;
         this.uriStorage = uriStorage;
         this.containerAccessor = caf.getContainerAccessor(this.uriAccessor);
     }
-    @Override
-    public Response get(String accept) {
-        //containerAccessor.getContentsPath();
-        String json = "{}";
-        return Response.ok(json).header(HttpHeaders.CONTENT_TYPE, "application/json").build();
-    }
 
+    @Override
+    public Response get(String accept) throws IOException {
+        if (accept == null) {
+            throw new IllegalArgumentException("MediaType is empty");
+        }
+
+        List<FileDTO> files = new ArrayList<>();
+        Files.list(containerAccessor.getContentsPath()).forEach(x -> {
+
+            FileDTO file = new FileDTO();
+            try {
+                file.setFilename(x.getFileName().toString());
+                file.setLastModifiedDate(Files.getLastModifiedTime(Paths.get(x.toUri())).toMillis());
+                file.setSize(Files.size(x));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            files.add(file);
+        });
+        if(files.isEmpty()){
+            throw new IllegalArgumentException("There are no files");
+        }
+        String json = marshal(files, accept);
+        switch (accept) {
+            case MediaType.APPLICATION_JSON:
+                return Response.ok(json, MediaType.APPLICATION_JSON).build();
+            default:
+                throw new IllegalArgumentException("error");
+        }
+
+    }
 
     @Override
     public ContainerResource subResource(String name) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public String marshal(Object obj, String mediaType) {
+        JAXBContext jaxbContext = jaxbContextResolver.getContext(obj.getClass());
+        return JaxbUtil.marshal(jaxbContext, obj, mediaType);
     }
 
 }
