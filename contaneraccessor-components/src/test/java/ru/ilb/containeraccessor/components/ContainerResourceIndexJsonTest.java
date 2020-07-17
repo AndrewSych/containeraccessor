@@ -20,6 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -56,7 +57,7 @@ public class ContainerResourceIndexJsonTest {
         URI pdfUri = this.getClass().getResource("test.pdf").toURI();
         URL input = new URL(getServiceBaseUri() + "/containers?uri=" + pdfUri.toString() + "&path=index.json");
         String apply = URLToStringFunction.INSTANCE.apply(input);
-        assertEquals("{\"filesDTO\":[{\"filename\":\"page-000.jpg\",\"size\":55505,\"lastModified\":\"16-07-2020\"}]}", apply);
+        assertEquals("{\"filesDTO\":[{\"filename\":\"page-000.jpg\",\"size\":55505,\"lastModified\":\"" + LocalDate.now() + "\"}]}", apply);
     }
 
 }

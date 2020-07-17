@@ -21,7 +21,6 @@ import java.nio.file.Files;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.WebApplicationException;
@@ -58,35 +57,25 @@ public class ContainerResourceIndexJson implements ContainerResource {
     }
 
     @Override
-    public Response get(String accept) throws IOException{
-        if (accept == null) {
-            throw new IllegalArgumentException("MediaType is empty");
+    public Response get(String accept) throws IOException {
+        if (accept != null && !accept.equals(MediaType.APPLICATION_JSON)) {
+            throw new WebApplicationException("MediaType is wrong");
         }
 
         List<FileDTO> files = new ArrayList<>();
         Files.list(containerAccessor.getContentsPath()).forEach(x -> {
             FileDTO file = new FileDTO();
-            try {
-                file.setFilename(x.getFileName().toString());
-                LocalDate date = Instant.ofEpochSecond(x.toFile().lastModified() / 1000).atZone(ZoneId.systemDefault()).toLocalDate();
-                file.setLastModified(date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-                file.setSize(Files.size(x));
-            } catch (IOException ex) {
-                throw new WebApplicationException(ex);
-            }
+            file.setFilename(x.getFileName().toString());
+            LocalDate date = Instant.ofEpochSecond(x.toFile().lastModified() / 1000).atZone(ZoneId.systemDefault()).toLocalDate();
+            file.setLastModified(date);
+            file.setSize(x.toFile().length());
             files.add(file);
         });
-        if(files.isEmpty()){
-            throw new IllegalArgumentException("There are no files");
+        if (files.isEmpty()) {
+            throw new WebApplicationException("There are no files");
         }
-
         JSONObject json = new JSONObject(new FilesDTO(files));
-        switch (accept) {
-            case MediaType.APPLICATION_JSON:
-                return Response.ok(json.toString(), MediaType.APPLICATION_JSON).build();
-            default:
-                throw new IllegalArgumentException("error");
-        }
+        return Response.ok(json.toString(), MediaType.APPLICATION_JSON).build();
 
     }
 

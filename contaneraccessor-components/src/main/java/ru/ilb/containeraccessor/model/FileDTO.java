@@ -37,7 +37,7 @@ public class FileDTO implements Serializable {
     private long size;
     
     @Basic
-    private String lastModified;
+    private LocalDate lastModified;
 
     /**
      * @return the filename
@@ -70,16 +70,17 @@ public class FileDTO implements Serializable {
     /**
      * @return the lastModified
      */
-    public String getLastModified() {
+    public LocalDate getLastModified() {
         return lastModified;
     }
 
     /**
      * @param lastModified the lastModified to set
      */
-    public void setLastModified(String lastModified) {
+    public void setLastModified(LocalDate lastModified) {
         this.lastModified = lastModified;
     }
+
 
 
 

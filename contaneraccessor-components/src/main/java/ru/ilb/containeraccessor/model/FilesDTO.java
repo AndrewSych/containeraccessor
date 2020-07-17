@@ -17,7 +17,6 @@ package ru.ilb.containeraccessor.model;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Basic;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -28,16 +27,17 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author andrewsych
  */
 @XmlRootElement(name = "files")
-@XmlAccessorType (XmlAccessType.FIELD)
-public class FilesDTO implements Serializable{
-    @XmlElement(name = "employee")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class FilesDTO implements Serializable {
+
+    @XmlElement(name = "file")
     private List<FileDTO> filesDTO = null;
-    
-    public FilesDTO(){
-        
+
+    public FilesDTO() {
+
     }
-    
-    public FilesDTO(List<FileDTO> listFiles){
+
+    public FilesDTO(List<FileDTO> listFiles) {
         this.filesDTO = listFiles;
     }
 
