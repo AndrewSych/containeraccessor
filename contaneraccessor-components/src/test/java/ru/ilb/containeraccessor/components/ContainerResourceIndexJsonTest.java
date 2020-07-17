@@ -64,7 +64,7 @@ public class ContainerResourceIndexJsonTest {
         LocalDateTime lastChanged = LocalDateTime.ofInstant(instantLastMod, ZoneId.systemDefault());
         String apply = URLToStringFunction.INSTANCE.apply(input);
         String expect = "[{\"filename\":\"page-000.jpg\",\"size\":55505,\"lastModified\":\"" + lastChanged + "\"}]";
-        //assertEquals(expect , apply);
+        assertEquals(expect , apply);
     }
 
 }
