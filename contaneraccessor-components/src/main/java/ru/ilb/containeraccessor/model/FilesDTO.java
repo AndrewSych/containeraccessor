@@ -31,28 +31,28 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class FilesDTO implements Serializable {
 
     @XmlElement(name = "file")
-    private List<FileDTO> filesDTO = null;
+    private List<FileDTO> files;
 
     public FilesDTO() {
 
     }
 
     public FilesDTO(List<FileDTO> listFiles) {
-        this.filesDTO = listFiles;
+        this.files = listFiles;
     }
 
     /**
      * @return the filesDTO
      */
     public List<FileDTO> getFilesDTO() {
-        return filesDTO;
+        return files;
     }
 
     /**
      * @param filesDTO the filesDTO to set
      */
     public void setFilesDTO(List<FileDTO> filesDTO) {
-        this.filesDTO = filesDTO;
+        this.files = filesDTO;
     }
 
 }

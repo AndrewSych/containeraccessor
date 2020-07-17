@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.time.Instant;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,17 +66,14 @@ public class ContainerResourceIndexJson implements ContainerResource {
         Files.list(containerAccessor.getContentsPath()).forEach(x -> {
             FileDTO file = new FileDTO();
             file.setFilename(x.getFileName().toString());
-            LocalDate date = Instant.ofEpochSecond(x.toFile().lastModified() / 1000).atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDateTime date = Instant.ofEpochSecond(x.toFile().lastModified() / 1000).atZone(ZoneId.systemDefault()).toLocalDateTime();
             file.setLastModified(date);
             file.setSize(x.toFile().length());
             files.add(file);
         });
-        if (files.isEmpty()) {
-            throw new WebApplicationException("There are no files");
-        }
-        JSONObject json = new JSONObject(new FilesDTO(files));
-        return Response.ok(json.toString(), MediaType.APPLICATION_JSON).build();
-
+        String json = new JSONObject(new FilesDTO(files)).toString();
+        return Response.ok(json.substring(12, json.length()-1), MediaType.APPLICATION_JSON).build();
+        
     }
 
     @Override
