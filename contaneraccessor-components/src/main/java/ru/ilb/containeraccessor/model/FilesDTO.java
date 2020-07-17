@@ -16,65 +16,43 @@
 package ru.ilb.containeraccessor.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author andrewsych
  */
-@XmlRootElement(name = "file")
+@XmlRootElement(name = "files")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FileDTO implements Serializable {
+public class FilesDTO implements Serializable {
 
-    private String filename;
-    
-    private long size;
-    
-    private LocalDateTime lastModified;
+    @XmlElement(name = "file")
+    private List<FileDTO> files;
 
-    /**
-     * @return the filename
-     */
-    public String getFilename() {
-        return filename;
+    public FilesDTO() {
+
+    }
+
+    public FilesDTO(List<FileDTO> listFiles) {
+        this.files = listFiles;
     }
 
     /**
-     * @param filename the filename to set
+     * @return the filesDTO
      */
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public List<FileDTO> getFilesDTO() {
+        return files;
     }
 
     /**
-     * @return the size
+     * @param filesDTO the filesDTO to set
      */
-    public long getSize() {
-        return size;
+    public void setFilesDTO(List<FileDTO> filesDTO) {
+        this.files = filesDTO;
     }
 
-    /**
-     * @param size the size to set
-     */
-    public void setSize(long size) {
-        this.size = size;
-    }
-
-    /**
-     * @return the lastModified
-     */
-    public LocalDateTime getLastModified() {
-        return lastModified;
-    }
-
-    /**
-     * @param lastModified the lastModified to set
-     */
-    public void setLastModified(LocalDateTime lastModified) {
-        this.lastModified = lastModified;
-    }
-    
 }

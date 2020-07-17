@@ -18,26 +18,24 @@ package ru.ilb.containeraccessor.components;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ContextResolver;
-import javax.xml.bind.JAXBContext;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.json.JSONObject;
 import ru.ilb.containeraccessor.core.ContainerAccessor;
 import ru.ilb.containeraccessor.core.ContainerAccessorFactory;
 import ru.ilb.uriaccessor.URIAccessor;
 import ru.ilb.uriaccessor.URIAccessorFactory;
 import ru.ilb.uriaccessor.URIStorage;
-import ru.ilb.common.jaxb.util.JaxbUtil;
 import ru.ilb.containeraccessor.model.FileDTO;
+import ru.ilb.containeraccessor.model.FilesDTO;
 
 public class ContainerResourceIndexJson implements ContainerResource {
-
-    @Autowired
-    private ContextResolver<JAXBContext> jaxbContextResolver;
 
     private final URI uri;
 
@@ -60,44 +58,27 @@ public class ContainerResourceIndexJson implements ContainerResource {
 
     @Override
     public Response get(String accept) throws IOException {
-        if (accept == null) {
-            throw new IllegalArgumentException("MediaType is empty");
+        if (accept != null && !accept.equals(MediaType.APPLICATION_JSON)) {
+            throw new WebApplicationException("MediaType is wrong");
         }
 
         List<FileDTO> files = new ArrayList<>();
         Files.list(containerAccessor.getContentsPath()).forEach(x -> {
-
             FileDTO file = new FileDTO();
-            try {
-                file.setFilename(x.getFileName().toString());
-                file.setLastModifiedDate(Files.getLastModifiedTime(Paths.get(x.toUri())).toMillis());
-                file.setSize(Files.size(x));
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            file.setFilename(x.getFileName().toString());
+            LocalDateTime date = Instant.ofEpochSecond(x.toFile().lastModified() / 1000).atZone(ZoneId.systemDefault()).toLocalDateTime();
+            file.setLastModified(date);
+            file.setSize(x.toFile().length());
             files.add(file);
         });
-        if(files.isEmpty()){
-            throw new IllegalArgumentException("There are no files");
-        }
-        String json = marshal(files, accept);
-        switch (accept) {
-            case MediaType.APPLICATION_JSON:
-                return Response.ok(json, MediaType.APPLICATION_JSON).build();
-            default:
-                throw new IllegalArgumentException("error");
-        }
-
+        String json = new JSONObject(new FilesDTO(files)).toString();
+        return Response.ok(json.substring(12, json.length()-1), MediaType.APPLICATION_JSON).build();
+        
     }
 
     @Override
     public ContainerResource subResource(String name) {
         throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public String marshal(Object obj, String mediaType) {
-        JAXBContext jaxbContext = jaxbContextResolver.getContext(obj.getClass());
-        return JaxbUtil.marshal(jaxbContext, obj, mediaType);
     }
 
 }
