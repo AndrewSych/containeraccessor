@@ -5,13 +5,12 @@
  */
 package ru.ilb.containeraccessor.core;
 
-import ru.ilb.containeraccessor.core.ContainerExtractorPdf;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
@@ -39,6 +38,10 @@ public class ContainerExtractorPdfTest {
         String pageFileName = "page-000.jpg";
         Path pagePath = folder.resolve(pageFileName);
         assertTrue(Files.exists(pagePath), pageFileName + " not exists");
+        long pdfFileTime = Paths.get(pdfUri).toFile().lastModified();
+        long pageFileTime = pagePath.toFile().lastModified();
+        assertEquals(pdfFileTime, pageFileTime);
+
 //        URI expectedPageUri = this.getClass().getResource("page-000.jpg").toURI();
 //        File expectedPageFile = Paths.get(expectedPageUri).toFile();
 //

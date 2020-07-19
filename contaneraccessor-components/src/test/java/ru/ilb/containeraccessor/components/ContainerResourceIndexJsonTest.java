@@ -20,12 +20,11 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -37,8 +36,8 @@ import ru.ilb.jfunction.resources.URLToStringFunction;
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ContainerResourceIndexJsonTest {
-
-    private ContainersResource resource;
+ 
+    //private ContainersResource resource;
 
     @LocalServerPort
     private Integer randomPort;
@@ -58,10 +57,12 @@ public class ContainerResourceIndexJsonTest {
      */
     @Test
     public void testGet() throws URISyntaxException, MalformedURLException, IOException {
+        System.out.println("extract123testget");
         URI pdfUri = this.getClass().getResource("test.pdf").toURI();
         URL input = new URL(getServiceBaseUri() + "/containers?uri=" + pdfUri.toString() + "&path=index.json");
-        Instant instantLastMod = Files.getLastModifiedTime(Paths.get(pdfUri)).toInstant();
-        LocalDateTime lastChanged = LocalDateTime.ofInstant(instantLastMod, ZoneId.systemDefault());
+        
+        long lastModifiedPdf = Paths.get(pdfUri).toFile().lastModified();
+        LocalDateTime lastChanged = LocalDateTime.ofInstant(Instant.ofEpochMilli(lastModifiedPdf), ZoneId.systemDefault());
         String apply = URLToStringFunction.INSTANCE.apply(input);
         String expect = "[{\"filename\":\"page-000.jpg\",\"size\":55505,\"lastModified\":\"" + lastChanged + "\"}]";
         assertEquals(expect , apply);
