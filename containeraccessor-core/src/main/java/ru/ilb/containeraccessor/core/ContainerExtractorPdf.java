@@ -34,8 +34,9 @@ public class ContainerExtractorPdf implements ContainerExtractor {
         String[] command = new String[]{"pdfimages", "-j", pdfPath.toString(), folder.resolve(prefix).toString()};
         RuntimeFunction instance = new RuntimeFunction(command);
         instance.apply(new byte[]{});
+        long lastModifiedPdf = pdfPath.toFile().lastModified();
         Files.list(folder).forEach(x -> {
-            x.toFile().setLastModified(pdfPath.toFile().lastModified());
+            x.toFile().setLastModified(lastModifiedPdf);
         });
     }
 }
