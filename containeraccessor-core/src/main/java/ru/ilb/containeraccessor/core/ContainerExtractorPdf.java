@@ -15,7 +15,6 @@
  */
 package ru.ilb.containeraccessor.core;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -25,9 +24,8 @@ import ru.ilb.jfunction.runtime.RuntimeFunction;
 
 public class ContainerExtractorPdf implements ContainerExtractor {
 
-
     @Override
-    public void extract(URI uri, Path folder)  throws IOException{
+    public void extract(URI uri, Path folder) throws IOException {
         Path pdfPath = Paths.get(uri.getPath());
         if (!Files.exists(pdfPath)) {
             throw new IllegalArgumentException(pdfPath.toString() + " does not exists");
@@ -36,5 +34,9 @@ public class ContainerExtractorPdf implements ContainerExtractor {
         String[] command = new String[]{"pdfimages", "-j", pdfPath.toString(), folder.resolve(prefix).toString()};
         RuntimeFunction instance = new RuntimeFunction(command);
         instance.apply(new byte[]{});
+        long lastModifiedPdf = pdfPath.toFile().lastModified();
+        Files.list(folder).forEach(x -> {
+            x.toFile().setLastModified(lastModifiedPdf);
+        });
     }
 }
