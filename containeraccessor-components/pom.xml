@@ -6,7 +6,7 @@
         <artifactId>containeraccessor</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>contaneraccessor-components</artifactId>
+    <artifactId>containeraccessor-components</artifactId>
     <packaging>jar</packaging>
     <properties>
         <apache-cxf.version>3.3.6</apache-cxf.version>
@@ -79,4 +79,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <name>containeraccessor-components</name>
 </project>

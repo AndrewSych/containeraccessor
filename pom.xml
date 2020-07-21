@@ -30,7 +30,7 @@
     </scm>
     <modules>
         <module>containeraccessor-core</module>
-        <module>contaneraccessor-components</module>
+        <module>containeraccessor-components</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
