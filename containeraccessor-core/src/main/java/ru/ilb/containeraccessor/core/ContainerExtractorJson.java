@@ -54,11 +54,15 @@ public class ContainerExtractorJson implements ContainerExtractor {
             String[] command = new String[]{"pdfimages", "-j", jsonPath.getParent().resolve(path).toString(), folder.resolve(prefix).toString()};
             RuntimeFunction instance = new RuntimeFunction(command);
             instance.apply(new byte[]{});
+//            long lastModifiedFile = Paths.get(path).toFile().lastModified();
+//            try {
+//                Files.list(folder).forEach(z -> {
+//                    z.toFile().setLastModified(lastModifiedFile);
+//                });
+//            } catch (IOException ex) {
+//                Logger.getLogger(ContainerExtractorJson.class.getName()).log(Level.SEVERE, null, ex);
+//            }
 
-        });
-        long lastModifiedFile = jsonPath.toFile().lastModified();
-        Files.list(folder).forEach(x -> {
-            x.toFile().setLastModified(lastModifiedFile);
         });
 
     }
