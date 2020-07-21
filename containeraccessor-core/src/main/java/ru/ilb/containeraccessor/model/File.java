@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "file")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FileDTO implements Serializable {
+public class File implements Serializable {
 
     private String filename;
     

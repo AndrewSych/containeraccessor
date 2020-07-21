@@ -32,7 +32,7 @@ import ru.ilb.containeraccessor.core.ContainerAccessorFactory;
 import ru.ilb.uriaccessor.URIAccessor;
 import ru.ilb.uriaccessor.URIAccessorFactory;
 import ru.ilb.uriaccessor.URIStorage;
-import ru.ilb.containeraccessor.model.FileDTO;
+import ru.ilb.containeraccessor.model.File;
 
 public class ContainerResourceIndexJson implements ContainerResource {
 
@@ -61,9 +61,9 @@ public class ContainerResourceIndexJson implements ContainerResource {
             throw new WebApplicationException("MediaType is wrong");
         }
 
-        List<FileDTO> files = new ArrayList<>();
+        List<File> files = new ArrayList<>();
         Files.list(containerAccessor.getContentsPath()).forEach(x -> {
-            FileDTO file = new FileDTO();
+            File file = new File();
             file.setFilename(x.getFileName().toString());
             LocalDateTime date = Instant.ofEpochSecond(x.toFile().lastModified() / 1000).atZone(ZoneId.systemDefault()).toLocalDateTime();
             file.setLastModified(date);
