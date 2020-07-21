@@ -10,6 +10,7 @@
     <packaging>jar</packaging>
     <properties>
         <apache-cxf.version>3.3.6</apache-cxf.version>
+        <eclipselink.version>2.7.6</eclipselink.version>
     </properties>
     <dependencies>
         <dependency>
@@ -34,6 +35,11 @@
             <artifactId>jfunction-map</artifactId>
             <version>1.2</version>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.moxy</artifactId>
+            <version>${eclipselink.version}</version>
         </dependency>
         <dependency>
             <groupId>javax</groupId>

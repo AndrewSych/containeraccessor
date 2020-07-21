@@ -15,8 +15,10 @@
  */
 package ru.ilb.containeraccessor;
 
+import org.eclipse.persistence.jaxb.rs.MOXyJsonProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,5 +35,9 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
+    @Bean
+    public MOXyJsonProvider jsonProvider() {
+        return new org.eclipse.persistence.jaxb.rs.MOXyJsonProvider();
+    }
 
 }
