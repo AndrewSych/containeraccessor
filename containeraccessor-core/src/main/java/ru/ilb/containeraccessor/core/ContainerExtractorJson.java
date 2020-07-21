@@ -56,13 +56,13 @@ public class ContainerExtractorJson implements ContainerExtractor {
             RuntimeFunction instance = new RuntimeFunction(command);
             instance.apply(new byte[]{});
             
-            try {
-                Files.list(folder).forEach(z -> {
-                    z.toFile().setLastModified(x.getLastModified().toEpochSecond(ZoneOffset.UTC));
-                });
-            } catch (IOException ex) {
-                Logger.getLogger(ContainerExtractorJson.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//            try {
+//                Files.list(folder).forEach(z -> {
+//                    z.toFile().setLastModified(x.getLastModified().toEpochSecond(ZoneOffset.UTC));
+//                });
+//            } catch (IOException ex) {
+//                Logger.getLogger(ContainerExtractorJson.class.getName()).log(Level.SEVERE, null, ex);
+//            }
 
         });
 
