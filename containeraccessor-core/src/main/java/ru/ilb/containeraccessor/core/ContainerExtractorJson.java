@@ -25,6 +25,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.ZoneOffset;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
@@ -54,14 +55,14 @@ public class ContainerExtractorJson implements ContainerExtractor {
             String[] command = new String[]{"pdfimages", "-j", jsonPath.getParent().resolve(path).toString(), folder.resolve(prefix).toString()};
             RuntimeFunction instance = new RuntimeFunction(command);
             instance.apply(new byte[]{});
-//            long lastModifiedFile = Paths.get(path).toFile().lastModified();
-//            try {
-//                Files.list(folder).forEach(z -> {
-//                    z.toFile().setLastModified(lastModifiedFile);
-//                });
-//            } catch (IOException ex) {
-//                Logger.getLogger(ContainerExtractorJson.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+            
+            try {
+                Files.list(folder).forEach(z -> {
+                    z.toFile().setLastModified(x.getLastModified().toEpochSecond(ZoneOffset.UTC));
+                });
+            } catch (IOException ex) {
+                Logger.getLogger(ContainerExtractorJson.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
         });
 
