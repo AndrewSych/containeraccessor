@@ -64,7 +64,7 @@ public class ContainerResourceIndexJsonTest {
         long lastModifiedPdf = Paths.get(pdfUri).toFile().lastModified();
         LocalDateTime lastChanged = LocalDateTime.ofInstant(Instant.ofEpochSecond(lastModifiedPdf / 1000), ZoneId.systemDefault());
         String apply = URLToStringFunction.INSTANCE.apply(input);
-        String expect = "[{\"filename\":\"page-000.jpg\",\"size\":55505,\"lastModified\":\"" + lastChanged + "\"}]";
+        String expect = "{\"files\":[{\"filename\":\"page-000.jpg\",\"size\":55505,\"lastModified\":\"" + lastChanged + "\"}]}";
         assertEquals(expect , apply);
     }
 

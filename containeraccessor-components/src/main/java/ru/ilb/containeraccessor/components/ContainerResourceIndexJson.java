@@ -33,7 +33,6 @@ import ru.ilb.uriaccessor.URIAccessor;
 import ru.ilb.uriaccessor.URIAccessorFactory;
 import ru.ilb.uriaccessor.URIStorage;
 import ru.ilb.containeraccessor.model.FileDTO;
-import ru.ilb.containeraccessor.model.FilesDTO;
 
 public class ContainerResourceIndexJson implements ContainerResource {
 
@@ -71,8 +70,8 @@ public class ContainerResourceIndexJson implements ContainerResource {
             file.setSize(x.toFile().length());
             files.add(file);
         });
-        String json = new JSONObject(new FilesDTO(files)).toString();
-        return Response.ok(json.substring(12, json.length()-1), MediaType.APPLICATION_JSON).build();
+        String json = new JSONObject(new ru.ilb.containeraccessor.model.Files(files)).toString();
+        return Response.ok(json, MediaType.APPLICATION_JSON).build();
         
     }
 
