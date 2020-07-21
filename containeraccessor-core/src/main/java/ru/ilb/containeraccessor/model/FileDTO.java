@@ -31,10 +31,12 @@ public class FileDTO implements Serializable {
 
     private String filename;
     
-    private long size;
+    private String path;
     
     private LocalDateTime lastModified;
-
+    
+    private long size;
+    
     /**
      * @return the filename
      */
@@ -75,6 +77,20 @@ public class FileDTO implements Serializable {
      */
     public void setLastModified(LocalDateTime lastModified) {
         this.lastModified = lastModified;
+    }
+
+    /**
+     * @return the path
+     */
+    public String getPath() {
+        return path;
+    }
+
+    /**
+     * @param path the path to set
+     */
+    public void setPath(String path) {
+        this.path = path;
     }
     
 }

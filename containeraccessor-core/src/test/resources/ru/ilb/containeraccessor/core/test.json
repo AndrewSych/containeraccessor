@@ -1,8 +1,10 @@
-[
-    {
-        "name": "test.pdf",
-        "path": "test.pdf",
-        "lastModified": "2020-06-19T23:01:34",
-        "size": 62684
-    }
-]
+{
+    "files": [
+        {
+            "name": "test.pdf",
+            "path": "test.pdf",
+            "lastModified": "2020-06-19T23:01:34",
+            "size": 62684
+        }
+    ]
+}

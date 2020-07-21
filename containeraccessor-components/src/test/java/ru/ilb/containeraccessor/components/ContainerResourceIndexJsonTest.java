@@ -57,7 +57,7 @@ public class ContainerResourceIndexJsonTest {
      */
     @Test
     public void testGet() throws URISyntaxException, MalformedURLException, IOException {
-        System.out.println("extract123testget");
+        System.out.println("test get");
         URI pdfUri = this.getClass().getResource("test.pdf").toURI();
         URL input = new URL(getServiceBaseUri() + "/containers?uri=" + pdfUri.toString() + "&path=index.json");
         
