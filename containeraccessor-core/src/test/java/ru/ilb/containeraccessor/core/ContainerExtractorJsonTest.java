@@ -10,7 +10,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
@@ -31,10 +30,12 @@ public class ContainerExtractorJsonTest {
         System.out.println("extract");
         URI jsonUri = this.getClass().getResource("test.json").toURI();
 
-        Path folder = Files.createTempDirectory("JsonToFilesImplTest");
+        Path folder = Files.createTempDirectory("PdfFromJsonToJpegFilesImplTest");
         folder.toFile().deleteOnExit();
         ContainerExtractorJson instance = new ContainerExtractorJson();
         instance.extract(jsonUri, folder);
-        System.out.println("ru.ilb.containeraccessor.core.ContainerExtractorJsonTest.testExtract()");
+        String pageFileName = "test_page-000.jpg";
+        Path pagePath = folder.resolve(pageFileName);
+        assertTrue(Files.exists(pagePath), pageFileName + " not exists");
     }
 }

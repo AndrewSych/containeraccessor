@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import ru.ilb.common.jaxb.util.JaxbUtil;
+import ru.ilb.jfunction.runtime.RuntimeFunction;
 
 /**
  *
@@ -46,10 +47,23 @@ public class ContainerExtractorJson implements ContainerExtractor {
 
         String data = readFile(jsonPath.toString());
         ru.ilb.containeraccessor.model.Files fls = (ru.ilb.containeraccessor.model.Files) unmarshal(data, ru.ilb.containeraccessor.model.Files.class, "application/json");
-        System.out.print("finish");
+
+        fls.getFiles().stream().forEach(x -> {
+            String path = (x.getPath().isEmpty() || x.getPath() == null) ? x.getFilename() : x.getPath();
+            String prefix = x.getFilename().contains(".") ? x.getFilename().split("\\.")[0] + "_page" : x.getFilename() + "_page";
+            String[] command = new String[]{"pdfimages", "-j", jsonPath.getParent().resolve(path).toString(), folder.resolve(prefix).toString()};
+            RuntimeFunction instance = new RuntimeFunction(command);
+            instance.apply(new byte[]{});
+
+        });
+        long lastModifiedFile = jsonPath.toFile().lastModified();
+        Files.list(folder).forEach(x -> {
+            x.toFile().setLastModified(lastModifiedFile);
+        });
+
     }
 
-    private <T> T unmarshal(String data, Class<T> type, String mediaType)  {
+    private <T> T unmarshal(String data, Class<T> type, String mediaType) {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(ru.ilb.containeraccessor.model.Files.class);
             return JaxbUtil.unmarshal(jaxbContext, data, type, mediaType);
@@ -60,13 +74,10 @@ public class ContainerExtractorJson implements ContainerExtractor {
     }
 
     private static String readFile(String path) throws IOException {
-        FileInputStream stream = new FileInputStream(new File(path));
-        try {
+        try (FileInputStream stream = new FileInputStream(new File(path))) {
             FileChannel fc = stream.getChannel();
             MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
             return Charset.defaultCharset().decode(bb).toString();
-        } finally {
-            stream.close();
         }
     }
 
