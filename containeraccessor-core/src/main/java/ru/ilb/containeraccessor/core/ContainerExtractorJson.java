@@ -15,22 +15,15 @@
  */
 package ru.ilb.containeraccessor.core;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URI;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.json.JsonObject;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import ru.ilb.common.jaxb.util.JaxbUtil;
@@ -54,7 +47,7 @@ public class ContainerExtractorJson implements ContainerExtractor {
         URIAccessorFactory factory = new URIAccessorFactory();
         fls.getFiles().stream().forEach(x -> {
             String path = (x.getPath().isEmpty() || x.getPath() == null) ? x.getFilename() : x.getPath();
-            URIAccessor accessor = factory.getURIAccessor(jsonPath.getParent().resolve(path).toUri());
+            URIAccessor accessor = factory.getURIAccessor(uriAccessor.getLocalUri().resolve(path));
             try (OutputStream fos = new FileOutputStream(folder.resolve(x.getFilename()).toString())) {
                 fos.write(accessor.getContent());
                 fos.close();
