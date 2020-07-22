@@ -34,8 +34,8 @@ public class ContainerExtractorJsonTest {
         folder.toFile().deleteOnExit();
         ContainerExtractorJson instance = new ContainerExtractorJson();
         instance.extract(jsonUri, folder);
-        String pageFileName = "test_page-000.jpg";
-        String andotherPageFileName = "tested_page-000.jpg";
+        String pageFileName = "test.pdf";
+        String andotherPageFileName = "tested.pdf";
         Path pagePath = folder.resolve(pageFileName);
         Path anotherPagePath = folder.resolve(andotherPageFileName);
         assertTrue(Files.exists(pagePath), pageFileName + " not exists");
