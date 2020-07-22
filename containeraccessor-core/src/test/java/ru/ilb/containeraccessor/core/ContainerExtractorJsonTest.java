@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+import ru.ilb.uriaccessor.URIAccessorFactory;
 
 /**
  *
@@ -29,11 +30,12 @@ public class ContainerExtractorJsonTest {
     public void testExtract() throws IOException, URISyntaxException {
         System.out.println("extract");
         URI jsonUri = this.getClass().getResource("test.json").toURI();
+        URIAccessorFactory f = new URIAccessorFactory();
 
         Path folder = Files.createTempDirectory("PdfFromJsonToJpegFilesImplTest");
         folder.toFile().deleteOnExit();
         ContainerExtractorJson instance = new ContainerExtractorJson();
-        instance.extract(jsonUri, folder);
+        instance.extract(f.getURIAccessor(jsonUri), folder);
         String pageFileName = "test.pdf";
         String andotherPageFileName = "tested.pdf";
         Path pagePath = folder.resolve(pageFileName);

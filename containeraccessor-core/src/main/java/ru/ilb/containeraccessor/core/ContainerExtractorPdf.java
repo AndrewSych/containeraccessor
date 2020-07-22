@@ -21,12 +21,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import ru.ilb.jfunction.runtime.RuntimeFunction;
+import ru.ilb.uriaccessor.URIAccessor;
 
 public class ContainerExtractorPdf implements ContainerExtractor {
 
     @Override
-    public void extract(URI uri, Path folder) throws IOException {
-        Path pdfPath = Paths.get(uri.getPath());
+    public void extract(URIAccessor uriAcessor, Path folder) throws IOException {
+        Path pdfPath = Paths.get(uriAcessor.getLocalUri());
         if (!Files.exists(pdfPath)) {
             throw new IllegalArgumentException(pdfPath.toString() + " does not exists");
         }

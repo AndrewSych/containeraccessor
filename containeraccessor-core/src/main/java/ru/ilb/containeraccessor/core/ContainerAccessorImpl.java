@@ -55,7 +55,7 @@ public class ContainerAccessorImpl implements ContainerAccessor {
             }
             if (!contentsExists) {
                 Files.createDirectories(contentsPath);
-                containerExtractor.extract(localUri, contentsPath);
+                containerExtractor.extract(uriAccessor, contentsPath);
             }
         }
         return contentsPath;

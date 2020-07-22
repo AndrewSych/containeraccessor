@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
@@ -31,6 +30,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.JsonObject;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import ru.ilb.common.jaxb.util.JaxbUtil;
@@ -44,20 +44,18 @@ import ru.ilb.uriaccessor.URIAccessorFactory;
 public class ContainerExtractorJson implements ContainerExtractor {
 
     @Override
-    public void extract(URI uri, Path folder) throws IOException {
-        Path jsonPath = Paths.get(uri.getPath());
+    public void extract(URIAccessor uriAccessor, Path folder) throws IOException {
+        Path jsonPath = Paths.get(uriAccessor.getUri());
         if (!Files.exists(jsonPath)) {
             throw new IllegalArgumentException(jsonPath.toString() + " does not exists");
         }
-
-        String data = readFile(jsonPath.toString());
+        String data = new String(uriAccessor.getContent());
         ru.ilb.containeraccessor.model.Files fls = (ru.ilb.containeraccessor.model.Files) unmarshal(data, ru.ilb.containeraccessor.model.Files.class, "application/json");
         URIAccessorFactory factory = new URIAccessorFactory();
         fls.getFiles().stream().forEach(x -> {
             String path = (x.getPath().isEmpty() || x.getPath() == null) ? x.getFilename() : x.getPath();
             URIAccessor accessor = factory.getURIAccessor(jsonPath.getParent().resolve(path).toUri());
-            try {
-                OutputStream fos = new FileOutputStream(folder.resolve(path).toString());
+            try (OutputStream fos = new FileOutputStream(folder.resolve(x.getFilename()).toString())) {
                 fos.write(accessor.getContent());
                 fos.close();
             } catch (FileNotFoundException ex) {
@@ -77,14 +75,6 @@ public class ContainerExtractorJson implements ContainerExtractor {
             Logger.getLogger(ContainerExtractorJson.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-    }
-
-    private static String readFile(String path) throws IOException {
-        try (FileInputStream stream = new FileInputStream(new File(path))) {
-            FileChannel fc = stream.getChannel();
-            MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
-            return Charset.defaultCharset().decode(bb).toString();
-        }
     }
 
 }

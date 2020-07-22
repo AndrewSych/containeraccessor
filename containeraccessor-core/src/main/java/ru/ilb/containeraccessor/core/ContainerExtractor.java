@@ -16,8 +16,8 @@
 package ru.ilb.containeraccessor.core;
 
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Path;
+import ru.ilb.uriaccessor.URIAccessor;
 
 /**
  *
@@ -27,10 +27,10 @@ public interface ContainerExtractor {
 
     /**
      * Extracts container contents to specified folder
-     * @param uri
+     * @param uriAccessor
      * @param folder
      * @throws java.io.IOException
      */
-    public void extract(URI uri, Path folder) throws IOException;
+    public void extract(URIAccessor uriAccessor, Path folder) throws IOException;
 
 }

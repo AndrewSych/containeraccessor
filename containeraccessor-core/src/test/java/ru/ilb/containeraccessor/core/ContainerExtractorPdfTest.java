@@ -13,6 +13,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+import ru.ilb.uriaccessor.URIAccessor;
+import ru.ilb.uriaccessor.URIAccessorFactory;
 
 /**
  *
@@ -30,11 +32,12 @@ public class ContainerExtractorPdfTest {
     public void testExtract() throws IOException, URISyntaxException {
         System.out.println("extract");
         URI pdfUri = this.getClass().getResource("test.pdf").toURI();
-
+        URIAccessorFactory f = new URIAccessorFactory();
+        
         Path folder = Files.createTempDirectory("PdfToJpegFilesImplTest");
         folder.toFile().deleteOnExit();
         ContainerExtractorPdf instance = new ContainerExtractorPdf();
-        instance.extract(pdfUri, folder);
+        instance.extract(f.getURIAccessor(pdfUri), folder);
         String pageFileName = "page-000.jpg";
         Path pagePath = folder.resolve(pageFileName);
         assertTrue(Files.exists(pagePath), pageFileName + " not exists");
